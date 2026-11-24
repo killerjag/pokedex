@@ -8,7 +8,8 @@ import (
 )
 
 type config struct {
-	commands map[string]cliCommand
+	next     *string
+	previous *string
 }
 
 type cliCommand struct {
@@ -54,6 +55,16 @@ func getCommands() map[string]cliCommand {
 			name:        "help",
 			description: "Displays a help message",
 			callback:    commandHelp,
+		},
+		"map": {
+			name:        "map",
+			description: "Displays the names of 20 locations",
+			callback:    commandMap,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "Displays the previous 20 locations",
+			callback:    commandMapb,
 		},
 	}
 	return commands
