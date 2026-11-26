@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/killerjag/pokedex/internal/pokeapi"
 )
 
 type config struct {
+	client   pokeapi.Client
 	next     *string
 	previous *string
 }

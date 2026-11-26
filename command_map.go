@@ -1,10 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
+
+	"github.com/killerjag/pokedex/internal/pokeapi"
 )
 
 type locationAreaRes struct {
@@ -24,24 +23,12 @@ func commandMap(cfg *config) error {
 		url = *cfg.next
 	}
 
-	res, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
+	location_list := pokeapi.ListLocations(url, cfg.client)
 
-	data, err := io.ReadAll(res.Body)
-	if err != nil {
-		return err
-	}
+	cfg.next = location_list.Next
+	cfg.previous = location_list.Previous
 
-	var location_area locationAreaRes
-	json.Unmarshal(data, &location_area)
-
-	cfg.next = location_area.Next
-	cfg.previous = location_area.Previous
-
-	for _, v := range location_area.Results {
+	for _, v := range location_list.Results {
 		fmt.Println(v.Name)
 	}
 
