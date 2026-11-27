@@ -94,5 +94,35 @@ func ListPokemon(url string, c Client) exploreAreaRes {
 }
 
 func GetPokemonData(url string, c Client) Pokemon {
-	return Pokemon{}
+	if val, ok := c.cache.Get(url); ok {
+		pokemon_data := Pokemon{}
+		err := json.Unmarshal(val, &pokemon_data)
+		if err != nil {
+			return Pokemon{}
+		}
+		return pokemon_data
+	}
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return Pokemon{}
+	}
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return Pokemon{}
+	}
+	defer resp.Body.Close()
+
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return Pokemon{}
+	}
+
+	var pokemon_data Pokemon
+	json.Unmarshal(data, &pokemon_data)
+
+	c.cache.Add(url, data)
+
+	return pokemon_data
 }
