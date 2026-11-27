@@ -6,18 +6,8 @@ import (
 	"github.com/killerjag/pokedex/internal/pokeapi"
 )
 
-type locationAreaRes struct {
-	Count    int     `json:"count"`
-	Next     *string `json:"next"`
-	Previous *string `json:"previous"`
-	Results  []struct {
-		Name string `json:"name"`
-		URL  string `json:"url"`
-	} `json:"results"`
-}
-
-func commandMap(cfg *config) error {
-	url := "https://pokeapi.co/api/v2/location-area"
+func commandMap(cfg *config, arg string) error {
+	url := "https://pokeapi.co/api/v2/location-area/"
 
 	if cfg.next != nil {
 		url = *cfg.next

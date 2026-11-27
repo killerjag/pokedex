@@ -6,7 +6,7 @@ import (
 	"github.com/killerjag/pokedex/internal/pokeapi"
 )
 
-func commandMapb(cfg *config) error {
+func commandMapb(cfg *config, arg string) error {
 	if cfg.previous == nil {
 		fmt.Println("Can't go back")
 		return nil
